@@ -65,6 +65,7 @@ if (!class_exists('Briskokit\Display_Hooks')) {
     /**
      * Display Hooks
      * @return
+     * @link https://developer.wordpress.org/reference/functions/add_action/
      */
     public static function visualize(){
       if ( ! self::is_brisko_active() ) {
@@ -75,10 +76,19 @@ if (!class_exists('Briskokit\Display_Hooks')) {
           /**
            * TODO only show this to the admin user
            */
-            add_action( $action , array( Display_Hooks::class , 'display_action_area' ));
+          add_action( $action , function($a) use ($action) {
+            $style = 'style="border:dotted thin #bac4cc;padding: 2px;text-align: center; background-color: #e3eff9;"';
+
+            $action_area = '<div class="action-area" '.$style.'>';
+            $action_area .= $action;
+            $action_area .= '</div>';
+
+            if ( is_user_logged_in() ) {
+              echo $action_area;
+            }
+          }, 10, 1);
         }
       }
     }
-
   } // class
 }
