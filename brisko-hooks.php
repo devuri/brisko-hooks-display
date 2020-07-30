@@ -12,7 +12,7 @@
  * Plugin Name:       Brisko Hooks Display
  * Plugin URI:        https://switchwebdev.com/wordpress-plugins/
  * Description:       Visual display of the brisko theme hooks.
- * Version:           0.1.6
+ * Version:           1.0.1
  * Requires at least: 3.4
  * Requires PHP:      5.6
  * Author:            SwitchWebdev.com
@@ -29,7 +29,7 @@
     }
 
   # plugin directory
-	  define("DBRISKOHKS_VERSION", '0.1.5');
+	  define("DBRISKOHKS_VERSION", '1.0.1');
 
   # plugin directory
     define("DBRISKOHKS_DIR", dirname(__FILE__));
