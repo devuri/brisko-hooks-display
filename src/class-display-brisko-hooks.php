@@ -23,6 +23,8 @@ if (!class_exists('Briskokit\Display_Hooks')) {
 		 	$actions[] = 'brisko_after_header';
 		 	$actions[] = 'brisko_homepage_header';
 		 	$actions[] = 'brisko_post_header';
+		 	$actions[] = 'brisko_before_entry_meta';
+		 	$actions[] = 'brisko_after_entry_meta';
 		 	$actions[] = 'brisko_page_header';
 		 	$actions[] = 'brisko_page_footer';
 		 	$actions[] = 'brisko_after_post_content';
@@ -34,21 +36,6 @@ if (!class_exists('Briskokit\Display_Hooks')) {
 		 	return $actions;
 		}
 
-    // /**
-    //  * actions display
-    //  * @return
-    //  */
-    // public static function display_action_area(){
-    // 	$style = 'style="border:dotted thin #bac4cc;padding: 2px;text-align: center; background-color: #e3eff9;"';
-    //
-    // 	$action_area = '<div class="action-area" '.$style.'>';
-    //   $action_area .= 'Brisko Action';
-    // 	$action_area .= '</div>';
-    //
-    //   if ( is_user_logged_in() ) {
-    //   	echo $action_area;
-    //   }
-    // }
 
     /**
      * check if brisko is active
