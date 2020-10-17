@@ -2,22 +2,22 @@
 
 namespace Briskokit;
 
-if (!defined('ABSPATH')) exit;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-if (!class_exists('Briskokit\Display_Hooks')) {
+if ( ! class_exists( 'Briskokit\Display_Hooks' ) ) {
 
 	/**
 	 * Display_Hooks
 	 */
-  final class Display_Hooks {
+	final class Display_Hooks {
 
-    /**
-     * brisko_actions()
-     *
-     * list of actions available
-     * @return array actions
-     */
-    public static function brisko_actions(){
+	    /**
+	     * Brisko actions
+	     * list of actions available
+	     *
+	     * @return array actions
+	     */
+	    public static function brisko_actions() {
 		 	$actions = array();
 		 	$actions[] = 'brisko_before_header';
 		 	$actions[] = 'brisko_after_header';
@@ -36,46 +36,47 @@ if (!class_exists('Briskokit\Display_Hooks')) {
 		 	return $actions;
 		}
 
+	    /**
+	     * Check if brisko is active
+	     *
+	     * @return bool
+	     */
+	    public static function is_brisko_active() {
+	    	if ( 'brisko' === get_option( 'template' ) ) {
+	        	return 1;
+	      	} else {
+	        	return 0;
+	      	}
+	    }
 
-    /**
-     * check if brisko is active
-     * @return boolean
-     */
-    public static function is_brisko_active(){
-      if ( 'brisko' === get_option( 'template' )  ) {
-        return 1;
-      } else {
-        return 0;
-      }
-    }
+	    /**
+	     * Display Hooks
+	     *
+	     * @return void
+	     * @link https://developer.wordpress.org/reference/functions/add_action/
+	     */
+	    public static function visualize() {
+	      	if ( ! self::is_brisko_active() ) { // @codingStandardsIgnoreLine
+	        	// TODO maybe add a admin notice.
+	      	} else {
+		        foreach ( self::brisko_actions() as $actionkey => $action ) {
+		          	/**
+		           	 * TODO only show this to the admin user
+		           	 */
+		          	add_action( $action, function() use ( $action ) {
+			            $style = 'style="border:dotted thin #bac4cc;padding: 2px;text-align: center; background-color: #e3eff9;"';
 
-    /**
-     * Display Hooks
-     * @return
-     * @link https://developer.wordpress.org/reference/functions/add_action/
-     */
-    public static function visualize(){
-      if ( ! self::is_brisko_active() ) {
-        // brisko is not active
-        // TODO maybe add a admin notice
-      } else {
-        foreach ( self::brisko_actions() as $actionkey => $action) {
-          /**
-           * TODO only show this to the admin user
-           */
-          add_action( $action , function($a) use ($action) {
-            $style = 'style="border:dotted thin #bac4cc;padding: 2px;text-align: center; background-color: #e3eff9;"';
+			            $action_area = '<div class="action-area" ' . $style . '>';
+			            $action_area .= $action;
+			            $action_area .= '</div>';
 
-            $action_area = '<div class="action-area" '.$style.'>';
-            $action_area .= $action;
-            $action_area .= '</div>';
-
-            if ( is_user_logged_in() ) {
-              echo $action_area;
-            }
-          }, 10, 1);
-        }
-      }
-    }
-  } // class
+			            	if ( is_user_logged_in() ) {
+			              		echo esc_attr( $action_area );
+			            	}
+		          			}, 10, 1
+					);
+		        }
+	      	}
+    	}
+  	}
 }
