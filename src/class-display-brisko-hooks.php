@@ -71,7 +71,7 @@ if ( ! class_exists( 'Briskokit\Display_Hooks' ) ) {
 			            $action_area .= '</div>';
 
 			            	if ( is_user_logged_in() ) {
-			              		echo esc_attr( $action_area );
+			              		echo wp_kses_post( $action_area );
 			            	}
 		          			}, 10, 1
 					);
