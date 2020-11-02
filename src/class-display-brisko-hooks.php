@@ -25,12 +25,15 @@ if ( ! class_exists( 'Briskokit\Display_Hooks' ) ) {
 		 	$actions[] = 'brisko_post_header';
 		 	$actions[] = 'brisko_before_entry_meta';
 		 	$actions[] = 'brisko_after_entry_meta';
+		 	$actions[] = 'brisko_before_comments';
+		 	$actions[] = 'brisko_after_comments';
 		 	$actions[] = 'brisko_page_header';
 		 	$actions[] = 'brisko_page_footer';
 		 	$actions[] = 'brisko_after_post_content';
 		 	$actions[] = 'brisko_before_sidebar';
 		 	$actions[] = 'brisko_after_sidebar';
 		 	$actions[] = 'brisko_before_footer';
+		 	$actions[] = 'brisko_footer_credit';
 		 	$actions[] = 'brisko_footer';
 		 	$actions[] = 'brisko_after_footer';
 		 	return $actions;
@@ -43,9 +46,9 @@ if ( ! class_exists( 'Briskokit\Display_Hooks' ) ) {
 	     */
 	    public static function is_brisko_active() {
 	    	if ( 'brisko' === get_option( 'template' ) ) {
-	        	return 1;
+	        	return true;
 	      	} else {
-	        	return 0;
+	        	return false;
 	      	}
 	    }
 
@@ -73,7 +76,7 @@ if ( ! class_exists( 'Briskokit\Display_Hooks' ) ) {
 			            	if ( is_user_logged_in() ) {
 			              		echo wp_kses_post( $action_area );
 			            	}
-		          			}, 10, 1
+						}, 99, 1
 					);
 		        }
 	      	}
