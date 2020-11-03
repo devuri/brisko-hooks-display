@@ -63,7 +63,8 @@ if ( ! class_exists( 'Briskokit\Display_Hooks' ) ) {
 				return null;
 			}
 
-			// only show to admin user .
+			// only show to admin user.
+			// fix: showing to all users.
 			if ( ! current_user_can( 'manage_options' ) ) {
 				return false;
 			}

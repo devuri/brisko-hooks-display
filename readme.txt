@@ -14,6 +14,7 @@ Easily See a Visual display of the brisko theme hooks.
 == Description ==
 
 This plugin will give you a Visual Representation of all the Brisko Theme Hooks.
+Only the Admin user will be able to see the hooks visualization.
 
 
 == Installation ==
