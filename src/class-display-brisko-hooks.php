@@ -52,6 +52,24 @@ if ( ! class_exists( 'Briskokit\Display_Hooks' ) ) {
 	      	}
 	    }
 
+		/**
+		 * Display the Hooks
+		 *
+		 * @param  string|null $get_action .
+		 */
+		private static function display_hooks( $get_action = null ) {
+
+			if ( is_null( $get_action ) ) {
+				return null;
+			}
+
+			// only show to admin user .
+			if ( ! current_user_can( 'manage_options' ) ) {
+				return false;
+			}
+			echo wp_kses_post( $get_action );
+		}
+
 	    /**
 	     * Display Hooks
 	     *
@@ -74,7 +92,7 @@ if ( ! class_exists( 'Briskokit\Display_Hooks' ) ) {
 			            $action_area .= '</div>';
 
 			            	if ( is_user_logged_in() ) {
-			              		echo wp_kses_post( $action_area );
+			              		self::display_hooks( $action_area );
 			            	}
 						}, 99, 1
 					);
