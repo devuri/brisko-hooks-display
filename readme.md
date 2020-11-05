@@ -4,4 +4,4 @@
 Visual display of the brisko theme hooks.
 
 ## Description
-This plugin will give you a Visual Representation of all the Brisko Theme Hooks.
+This plugin will give you a Visual Representation of the Brisko WordPress Theme Hooks.
