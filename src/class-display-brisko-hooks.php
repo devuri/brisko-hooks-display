@@ -62,6 +62,7 @@ if ( ! class_exists( 'Briskokit\Display_Hooks' ) ) {
 			$actions[] = 'brisko_blog_subtitle';
 			$actions[] = 'brisko_before_entry_meta';
 			$actions[] = 'brisko_after_entry_meta';
+			$actions[] = 'brisko_before_tags';
 			$actions[] = 'brisko_related_content';
 			$actions[] = 'brisko_after_post_content';
 
@@ -104,9 +105,9 @@ if ( ! class_exists( 'Briskokit\Display_Hooks' ) ) {
 		 *
 		 * @param  string|null $get_action .
 		 */
-		private function display_hooks( $get_action = null ) {
+		private function display_hooks( $action = null ) {
 
-			if ( is_null( $get_action ) ) {
+			if ( is_null( $action ) ) {
 				return null;
 			}
 
@@ -119,7 +120,23 @@ if ( ! class_exists( 'Briskokit\Display_Hooks' ) ) {
 			if ( ! current_user_can( 'manage_options' ) ) {
 				return false;
 			}
-			echo wp_kses_post( $get_action );
+
+			echo wp_kses_post( self::display( $action ) );
+		}
+
+		/**
+		 * Display the hook div.
+		 *
+		 * @param  string $action  the action.
+		 * @return string .
+		 */
+		public static function display( $action ) {
+			$styles = 'style="border:dotted thin #bac4cc;padding: 2px;text-align: center; background-color: #e3eff9;"';
+			return sprintf(
+				'<div class="action-area" %s>%s</div>',
+				$styles,
+				$action
+			);
 		}
 
 	    /**
@@ -137,14 +154,9 @@ if ( ! class_exists( 'Briskokit\Display_Hooks' ) ) {
 		           	 * TODO only show this to the admin user
 		           	 */
 		          	add_action( $action, function() use ( $action ) {
-			            $style = 'style="border:dotted thin #bac4cc;padding: 2px;text-align: center; background-color: #e3eff9;"';
-
-			            $action_area = '<div class="action-area" ' . $style . '>';
-			            $action_area .= $action;
-			            $action_area .= '</div>';
 
 			            	if ( is_user_logged_in() ) {
-			              		$this->display_hooks( $action_area );
+			              		$this->display_hooks( $action );
 			            	}
 						}, 99, 1
 					);
