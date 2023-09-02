@@ -1,5 +1,5 @@
 
-> **Note** This version is no longer under active development. Please use Brisko Elements, download here: [ Brisko Elements.](https://github.com/devuri/brisko-elements/).
+> **Note** This version is no longer under active development. please use [ Brisko Elements](https://github.com/devuri/brisko-elements/).
 
 
 
