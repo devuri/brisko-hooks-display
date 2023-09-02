@@ -11,32 +11,80 @@ if ( ! class_exists( 'Briskokit\Display_Hooks' ) ) {
 	 */
 	final class Display_Hooks {
 
+		/**
+		 * Private $instance
+		 *
+		 * @var $instance
+		 */
+		private static $instance;
+
+		/**
+		 * Singleton
+		 *
+		 * @return object
+		 */
+		public static function init() {
+
+			if ( ! isset( self::$instance ) ) {
+				self::$instance = new self();
+			}
+			return self::$instance;
+		}
+
+		/**
+		 * Brisko Hooks Displays is ready.
+		 *
+		 * @return void
+		 */
+		public function loaded() {
+			do_action( 'brisko_hooks_display' );
+		}
+
 	    /**
 	     * Brisko actions
 	     * list of actions available
 	     *
 	     * @return array actions
 	     */
-	    public static function brisko_actions() {
-		 	$actions = array();
-		 	$actions[] = 'brisko_before_header';
-		 	$actions[] = 'brisko_after_header';
-		 	$actions[] = 'brisko_homepage_header';
-		 	$actions[] = 'brisko_post_header';
-		 	$actions[] = 'brisko_before_entry_meta';
-		 	$actions[] = 'brisko_after_entry_meta';
-		 	$actions[] = 'brisko_before_comments';
-		 	$actions[] = 'brisko_after_comments';
-		 	$actions[] = 'brisko_page_header';
-		 	$actions[] = 'brisko_page_footer';
-		 	$actions[] = 'brisko_after_post_content';
-		 	$actions[] = 'brisko_before_sidebar';
-		 	$actions[] = 'brisko_after_sidebar';
-		 	$actions[] = 'brisko_before_footer';
-		 	$actions[] = 'brisko_footer_credit';
-		 	$actions[] = 'brisko_footer';
-		 	$actions[] = 'brisko_after_footer';
-		 	return $actions;
+	    public function brisko_actions() {
+
+			// header.
+			$actions[] = 'brisko_before_header';
+			$actions[] = 'brisko_custom_header';
+			$actions[] = 'brisko_navigation';
+			$actions[] = 'brisko_nav_menu';
+			$actions[] = 'brisko_after_header';
+			$actions[] = 'brisko_homepage_header';
+
+			// post.
+			$actions[] = 'brisko_post_header';
+			$actions[] = 'brisko_blog_title';
+			$actions[] = 'brisko_blog_subtitle';
+			$actions[] = 'brisko_before_entry_meta';
+			$actions[] = 'brisko_after_entry_meta';
+			$actions[] = 'brisko_before_tags';
+			$actions[] = 'brisko_related_content';
+			$actions[] = 'brisko_after_post_content';
+
+			// comments.
+			$actions[] = 'brisko_before_comments';
+			$actions[] = 'brisko_after_comments';
+
+			// page.
+			$actions[] = 'brisko_page_header';
+			$actions[] = 'brisko_page_footer';
+
+			// sidebar.
+			$actions[] = 'brisko_before_sidebar';
+			$actions[] = 'brisko_after_sidebar';
+
+			// footer.
+			$actions[] = 'brisko_before_footer';
+			$actions[] = 'brisko_footer_credit';
+			$actions[] = 'brisko_footer';
+			$actions[] = 'brisko_after_footer';
+
+			return $actions;
 		}
 
 	    /**
@@ -44,7 +92,7 @@ if ( ! class_exists( 'Briskokit\Display_Hooks' ) ) {
 	     *
 	     * @return bool
 	     */
-	    public static function is_brisko_active() {
+	    public function is_brisko_active() {
 	    	if ( 'brisko' === get_option( 'template' ) ) {
 	        	return true;
 	      	} else {
@@ -57,10 +105,14 @@ if ( ! class_exists( 'Briskokit\Display_Hooks' ) ) {
 		 *
 		 * @param  string|null $get_action .
 		 */
-		private static function display_hooks( $get_action = null ) {
+		private function display_hooks( $action = null ) {
 
-			if ( is_null( $get_action ) ) {
+			if ( is_null( $action ) ) {
 				return null;
+			}
+
+			if ( false === get_theme_mod( 'display_brisko_hooks', false ) ) {
+				return false;
 			}
 
 			// only show to admin user.
@@ -68,7 +120,23 @@ if ( ! class_exists( 'Briskokit\Display_Hooks' ) ) {
 			if ( ! current_user_can( 'manage_options' ) ) {
 				return false;
 			}
-			echo wp_kses_post( $get_action );
+
+			echo wp_kses_post( self::display( $action ) );
+		}
+
+		/**
+		 * Display the hook div.
+		 *
+		 * @param  string $action  the action.
+		 * @return string .
+		 */
+		public static function display( $action ) {
+			$styles = 'style="border:dotted thin #bac4cc;padding: 2px;text-align: center; background-color: #e3eff9;"';
+			return sprintf(
+				'<div class="action-area" %s>%s</div>',
+				$styles,
+				$action
+			);
 		}
 
 	    /**
@@ -77,23 +145,18 @@ if ( ! class_exists( 'Briskokit\Display_Hooks' ) ) {
 	     * @return void
 	     * @link https://developer.wordpress.org/reference/functions/add_action/
 	     */
-	    public static function visualize() {
-	      	if ( ! self::is_brisko_active() ) { // @codingStandardsIgnoreLine
+	    public function visualize() {
+	      	if ( ! $this->is_brisko_active() ) { // @codingStandardsIgnoreLine
 	        	// TODO maybe add a admin notice.
 	      	} else {
-		        foreach ( self::brisko_actions() as $actionkey => $action ) {
+		        foreach ( $this->brisko_actions() as $actionkey => $action ) {
 		          	/**
 		           	 * TODO only show this to the admin user
 		           	 */
 		          	add_action( $action, function() use ( $action ) {
-			            $style = 'style="border:dotted thin #bac4cc;padding: 2px;text-align: center; background-color: #e3eff9;"';
-
-			            $action_area = '<div class="action-area" ' . $style . '>';
-			            $action_area .= $action;
-			            $action_area .= '</div>';
 
 			            	if ( is_user_logged_in() ) {
-			              		self::display_hooks( $action_area );
+			              		$this->display_hooks( $action );
 			            	}
 						}, 99, 1
 					);
