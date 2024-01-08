@@ -31,15 +31,6 @@ if ( ! class_exists( 'Briskokit\Display_Hooks' ) ) {
 			return self::$instance;
 		}
 
-		/**
-		 * Brisko Hooks Displays is ready.
-		 *
-		 * @return void
-		 */
-		public function loaded() {
-			do_action( 'brisko_hooks_display' );
-		}
-
 	    /**
 	     * Brisko actions
 	     * list of actions available
