@@ -13,7 +13,7 @@
  * Plugin URI:        https://wpbrisko.com/wordpress-plugins/
  * Description:       Visual display of the brisko theme hooks.
  * Version:           1.3.0
- * Requires at least: 3.4
+ * Requires at least: 4.6
  * Requires PHP:      5.6
  * Author:            uriel
  * Author URI:        https://wpbrisko.com

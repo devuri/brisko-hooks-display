@@ -2,7 +2,7 @@
 Contributors: icelayer
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6D6W2KXB88NKE
 Tags: brisko, theme, custom theme
-Requires at least: 3.7
+Requires at least: 4.6
 Tested up to: 5.7
 Stable tag: 1.3.0
 Requires PHP: 5.6
